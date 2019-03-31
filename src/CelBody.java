@@ -9,7 +9,16 @@ public class CelBody {
 	private ArrayList<CelBody> moons;
 	private String orbiting;
 	//Costruttore
-	public CelBody() {}
+	public CelBody() {	
+		pos = new Position();
+		moons = new ArrayList<CelBody>();
+		orbiting = "Sun";
+	}
+	public CelBody(CelBody p) {
+		pos = new Position();
+		numMoons = 0;
+		orbiting = p.getName();
+	}
 	
 	//Getters and setters
 	public ArrayList<CelBody> getMoons() {
@@ -39,8 +48,8 @@ public class CelBody {
 	public double getMass() {
 		return mass;
 	}
-	public void setMass(double mass2) {
-		this.mass = mass2;
+	public void setMass(double mass) {
+		this.mass = mass;
 	}
 	public String getName() {
 		return name;
