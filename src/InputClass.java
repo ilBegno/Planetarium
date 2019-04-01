@@ -17,7 +17,7 @@ public class InputClass {
 				+ " in caso non ne possieda inserire 0: ");
 		c.setNumMoons(lettore.nextInt());
 		
-		for(int i = 0; i < c.getNumMoons(); i++) {
+		for (int i = 0; i < c.getNumMoons(); i++) {
 			CelBody moon = new CelBody(c); 
 			setMoon(moon, i);
 			(c.getMoons()).add(moon);

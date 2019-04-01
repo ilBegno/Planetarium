@@ -2,7 +2,8 @@
 public class MainClass {
 
 	public static void main(String[] args) {
-		SolarSistem.setSolarSistem();
+		SolarSistem solarSys = new SolarSistem();
+		solarSys.setSolarSistem();
 		
 		while (true)
 		{
@@ -15,7 +16,7 @@ public class MainClass {
 			case "R":
 				System.out.print("Inserire il nome del pianeta da cercare: ");
 				String toSearch = InputClass.lettore.next();
-				if (SolarSistem.research(SolarSistem.getPlanets(), SolarSistem.getNumPlanets(), toSearch))
+				if (solarSys.research(solarSys.getPlanets(), solarSys.getNumPlanets(), toSearch))
 						System.out.println("Il pianeta è presente nel sistema solare");
 				else System.out.println("Il pianeta non è presente nel sistema solare");
 				break;
@@ -28,6 +29,6 @@ public class MainClass {
 				break;
 			}
 			
+		}
 	}
-
 }
