@@ -14,13 +14,13 @@ public class InputClass {
 		System.out.print("y: ");
 		(c.getPos()).setX(lettore.nextDouble());
 		System.out.print("Questo pianeta possiede lune? Digitare il numero di lune,"
-				+ " in caso non ne possieda inserire 0 ");
+				+ " in caso non ne possieda inserire 0: ");
 		c.setNumMoons(lettore.nextInt());
 		
 		for(int i = 0; i < c.getNumMoons(); i++) {
 			CelBody moon = new CelBody(c); 
 			setMoon(moon, i);
-			c.getMoons().add(moon);
+			(c.getMoons()).add(moon);
 		}
 	}
 	private static void setMoon(CelBody m, int i) {
