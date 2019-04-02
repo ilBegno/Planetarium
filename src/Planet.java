@@ -22,10 +22,10 @@ public class Planet extends CelBody {
 	}
 	public void addMoon(CelBody moon) {
 		int check = -1;
-		if(findMoon(moon.getName()) == check) moons.add(moon);
+		if(findMoon(moon.getId()) == check) moons.add(moon);
 	}
-	public boolean removeMoon(String name) {
-		int index = findMoon(name);
+	public boolean removeMoon(String id) {
+		int index = findMoon(id);
 		if (index > 0) {
 			moons.remove(index);
 			return true;

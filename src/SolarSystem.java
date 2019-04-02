@@ -4,6 +4,7 @@ public class SolarSystem {
 	//attr
 	private String name;
 	private ArrayList<Planet> planets;
+	private int currentId = 0;
 	private double centerOfMass;
 	
 	//g & s
@@ -13,15 +14,19 @@ public class SolarSystem {
 	public void setPlanets(ArrayList<Planet> planets) {
 		this.planets = planets;
 	}
-	public void addPlanet(Planet p) {
-		planets.add(p);
+	public boolean addPlanet(Planet p) {
+		if (findPlanet(p.getId())== -1) {// se non esiste un altro pianeta con lo stesso Id
+			planets.add(p);
+			return true;
+		}
+		return false;	
 	}
 	
-	public void removePlanet(String name) {
-		planets.remove(findPlanet(name));
+	public void removePlanet(String id) {
+		planets.remove(findPlanet(id));
 	}
 	public void removePlanet(Planet p) {
-		removePlanet(p.getName());
+		removePlanet(p.getId());
 	}
 	
 	public String getName() {
@@ -31,9 +36,25 @@ public class SolarSystem {
 		this.name = name;
 	}
 	
+	public double getCenterOfMass() {
+		return centerOfMass;
+	}
+	public void setCenterOfMass(double centerOfMass) {
+		this.centerOfMass = centerOfMass;
+	}
+	
 	public Planet getPlanet(int index) {
 		return planets.get(index);
 	}
+	
+	public int getCurrentId() {
+		return currentId;
+	}
+	
+	public void incrId() {
+		this.currentId++;
+	}
+	
 	//constr
 	public SolarSystem(){
 		this.setPlanets(new ArrayList<Planet>());
@@ -47,14 +68,22 @@ public class SolarSystem {
 		
 	}
 	
-	public int findPlanet(String name) {
-	
+	public int findPlanet(String id) {
+		for(int i = 0;i<planets.size();i++) {
+			if( planets.get(i).getId().equals(id)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	public int findPlanetbyName(String name) {
 		for(int i = 0;i<planets.size();i++) {
 			if( planets.get(i).getName().equals(name)) {
 				return i;
 			}
 		}
 		return -1;
+		
 	}
 	
 	public boolean checkIfMoonExists(String name) {
@@ -72,4 +101,7 @@ public class SolarSystem {
 		}
 		return null;
 	}
+	
+	
+
 }
