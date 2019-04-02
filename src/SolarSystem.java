@@ -5,7 +5,8 @@ public class SolarSystem {
 	private String name;
 	private ArrayList<Planet> planets;
 	private int currentId = 0;
-	private double centerOfMass;
+	private Position centerOfMass;
+	
 	
 	//g & s
 	public ArrayList<Planet> getPlanets() {
@@ -22,8 +23,8 @@ public class SolarSystem {
 		return false;	
 	}
 	
-	public void removePlanet(String id) {
-		planets.remove(findPlanet(id));
+	public void removePlanet(String name) {
+		planets.remove(findPlanetbyName(name));
 	}
 	public void removePlanet(Planet p) {
 		removePlanet(p.getId());
@@ -36,10 +37,11 @@ public class SolarSystem {
 		this.name = name;
 	}
 	
-	public double getCenterOfMass() {
+
+	public Position getCenterOfMass() {
 		return centerOfMass;
 	}
-	public void setCenterOfMass(double centerOfMass) {
+	public void setCenterOfMass(Position centerOfMass) {
 		this.centerOfMass = centerOfMass;
 	}
 	
@@ -50,7 +52,6 @@ public class SolarSystem {
 	public int getCurrentId() {
 		return currentId;
 	}
-	
 	public void incrId() {
 		this.currentId++;
 	}
@@ -58,16 +59,14 @@ public class SolarSystem {
 	//constr
 	public SolarSystem(){
 		this.setPlanets(new ArrayList<Planet>());
+		Position pos = new Position(0, 0);
+		setCenterOfMass(pos);
 	}
 	public SolarSystem(ArrayList<Planet> planets) {
 		setPlanets(planets);
 	}
 	
 	//metods
-	public void updateCenterOfMass() {
-		
-	}
-	
 	public int findPlanet(String id) {
 		for(int i = 0;i<planets.size();i++) {
 			if( planets.get(i).getId().equals(id)) {
@@ -77,7 +76,7 @@ public class SolarSystem {
 		return -1;
 	}
 	public int findPlanetbyName(String name) {
-		for(int i = 0;i<planets.size();i++) {
+		for(int i = 0; i < planets.size(); i++) {
 			if( planets.get(i).getName().equals(name)) {
 				return i;
 			}
@@ -86,9 +85,17 @@ public class SolarSystem {
 		
 	}
 	
+	public Planet findPlanetofMoon(String name) {
+		for (Planet p: planets) {
+			for(int i = 0; i < p.getMoons().size(); i++)
+				if(p.getMoons().get(i).getName().equals(name)) return p;
+		}		
+		return null;
+			
+	}
 	public boolean checkIfMoonExists(String name) {
 		for(Planet p : planets) {
-			if (p.findMoon(name) > 0) return true;
+			if (p.findMoon(name) >= 0) return true;
 		}
 		return false;
 	}
@@ -96,12 +103,31 @@ public class SolarSystem {
 	public Planet getPlanetofMoon(String name) {
 		if (checkIfMoonExists(name)) {
 			for(Planet p : planets) {
-				if (p.findMoon(name) > 0) return p;
+				if (p.findMoon(name) >= 0) return p;
 			}
 		}
 		return null;
 	}
 	
+	public void calcCoF() {
+		double totalMass = 0;
+		Position cof;
+		double sumX = 0;
+		double sumY = 0;
+		for(Planet p: planets) {
+			totalMass = totalMass + p.getMass();
+			sumX = p.getPos().getX() * p.getMass();
+			sumY = p.getPos().getY() * p.getMass();
+			for (CelBody m: p.getMoons()) {
+				totalMass = totalMass + m.getMass();
+				sumX = m.getPos().getX() * m.getMass();
+				sumY = m.getPos().getY() * m.getMass();
+			}
+				
+		}
+		cof = new Position(sumX/totalMass, sumY/totalMass);
+		setCenterOfMass(cof);
+	}
 	
 
 }

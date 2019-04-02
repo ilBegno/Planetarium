@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Menu {
 	private String status;
@@ -21,13 +22,18 @@ public class Menu {
 	 
 		CICLO: while (true)
 		{
-			System.out.printf("####################################################" 
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.printf("%n####################################################" 
 					+ "%nSalve utente del Consiglio Intergalattico, cosa desidera fare?"
-					+ "%nPer aggiungere un corpo celeste al sistema digiti A"
-					+ "%nPer eliminare un corpo celeste al sistema digiti D"
-					+ "%nPer cercare un corpo celeste digiti R"
-					+ "%nPer conoscere la posizione del centro di massa del sistema digiti C"
-					+ "%nPer terminare l'esecuzione del programma digiti E%n"
+					+ "%nx Per aggiungere un corpo celeste al sistema digiti A"
+					+ "%nx Per eliminare un corpo celeste al sistema digiti D"
+					+ "%nx Per cercare un corpo celeste digiti R"
+					+ "%nx Per conoscere la posizione del centro di massa del sistema digiti C"
+					+ "%nx Per terminare l'esecuzione del programma digiti E%n"
 					+ "####################################################%n");
 			status = lettore.next();
 			status = status.substring(0, 1);
@@ -41,12 +47,17 @@ public class Menu {
 					break;
 					
 				case DELETE:
+					delete();
 					break;
 					
 				case RESEARCH:
+					research();
 					break;
 					
 				case COFMASS:
+					solSys.calcCoF();
+					System.out.printf("La posizione del centro di massa del sistema e':"
+							+ "%n X: %f" + "%n Y: %f", solSys.getCenterOfMass().getX(), solSys.getCenterOfMass().getY());
 					break;
 					
 				case EXIT: 
@@ -55,13 +66,74 @@ public class Menu {
 			
 		}
 		lettore.close();
+		System.out.println("Esecuzione terminata");
 	}
 	
+	private void research() {
+		System.out.println("Inserire il nome del corpo celeste che si desidera cercare nel sistema: ");
+		String tosearch = lettore.next();
+		boolean found = false;
+		int index = solSys.findPlanetbyName(tosearch);
+		if (index >= 0) {
+			found = true;
+			System.out.printf("Le lune del pianeta %s sono %s", tosearch,solSys.getPlanet(index).showMoons());
+		}
+		if(found == false && solSys.checkIfMoonExists(tosearch)) {
+			String planetname = solSys.findPlanetofMoon(tosearch).getName();
+			found = true;
+			System.out.printf("La luna %s orbita intorno a %s", tosearch, planetname);
+			System.out.printf("%nLa rotta per raggiungere questa luna e': %n%s %s %s", "Sun", planetname, tosearch);
+		}
+		if(found == false) {
+			System.out.printf("Il corpo celeste %s non è stato trovato nel sistema", tosearch);
+		}
+	}
+
+	private void delete() {
+		String planetormoon;
+		String toremove;
+		System.out.printf("%nSi desidera rimuovere un pianeta o una luna dal sistema? "
+				+ "%nDigitare P per un pianeta oppure M per una luna: ");
+		planetormoon = lettore.next();
+		planetormoon = planetormoon.substring(0, 1);
+		planetormoon = planetormoon.toUpperCase();
+		switch(planetormoon) 
+		{
+		case "P":
+			System.out.print("Inserire il nome del pianeta da rimuovere: ");
+			toremove = lettore.next();
+			if (solSys.findPlanetbyName(toremove) >= 0) {
+				solSys.removePlanet(toremove);
+				System.out.println("Pianeta rimosso correttamente");
+			}
+			else
+				System.out.println("Il pianeta non esiste nel sistema");
+			break;
+		case "M":
+			System.out.print("Inserire il nome della luna da rimuovere: ");
+			toremove = lettore.next();
+			if (solSys.checkIfMoonExists(toremove)) {
+				solSys.findPlanetofMoon(toremove).removeMoon(toremove);
+				System.out.println("Luna rimossa correttamente");
+			}
+			else {
+				System.out.println("La luna non esiste nel sistema");
+			}
+		break;
+		default:
+			System.out.println("Errore");
+		break;
+		}
+		
+	}
+
 	private void add() {
 		String planetormoon;
 		System.out.printf("%nSi desidera aggiungere un pianeta o una luna ad un pianeta del sistema? "
 				+ "%nDigitare P per un pianeta oppure M per una luna: ");
 		planetormoon = lettore.next();
+		planetormoon = planetormoon.substring(0, 1);
+		planetormoon = planetormoon.toUpperCase();
 		
 		switch(planetormoon) 
 		{

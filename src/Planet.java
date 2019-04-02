@@ -24,8 +24,8 @@ public class Planet extends CelBody {
 		int check = -1;
 		if(findMoon(moon.getId()) == check) moons.add(moon);
 	}
-	public boolean removeMoon(String id) {
-		int index = findMoon(id);
+	public boolean removeMoon(String name) {
+		int index = findMoon(name);
 		if (index > 0) {
 			moons.remove(index);
 			return true;
@@ -41,14 +41,14 @@ public class Planet extends CelBody {
 		}
 		for (CelBody m: moons) 
 		{
-			strToPrint = strToPrint +  " " + m.getName() +  "%n";	
+			strToPrint = strToPrint +  " " + m.getName() + " ";	
 		}
 		return strToPrint;
 	}
 	
 	public int findMoon(String name) {
 		for(int i = 0; i < moons.size(); i++) {
-			if(moons.get(i).getName().equals(name)) {
+			if((moons.get(i).getName()).equals(name)) {
 				return i;
 			}
 		}
