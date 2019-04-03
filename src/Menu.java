@@ -18,11 +18,11 @@ public class Menu {
 	}
 	
 	public void init() {
-		System.out.println("Benvenuto nel planetario!");
+		System.out.println("Inizializzazione del planetario...");
 		System.out.println("Inserisci il nome del sistema solare che vuoi creare: ");
-		solSys.setName(lettore.next());
+		solSys.setName(lettore.nextLine());
 		System.out.println("Inserisci il nome del sole: ");
-		solSys.setSunName(lettore.next());
+		solSys.setSunName(lettore.nextLine());
 		System.out.println("Inserisci la massa del sole: ");
 		solSys.setSunMass(lettore.nextDouble());
 	}
@@ -36,13 +36,14 @@ public class Menu {
 				e.printStackTrace();
 			}
 			System.out.printf("%n####################################################"
-					+ "%nSalve utente del Consiglio Intergalattico, cosa desidera fare?"
+					+ "%nSalve utente del Consiglio Intergalattico"
+					+ "%nBenvenuto nel %s! Cosa desidera fare?"
 					+ "%nx Per aggiungere un corpo celeste al sistema digiti A"
 					+ "%nx Per eliminare un corpo celeste al sistema digiti D"
 					+ "%nx Per cercare un corpo celeste digiti R"
 					+ "%nx Per conoscere la posizione del centro di massa del sistema digiti C"
 					+ "%nx Per terminare l'esecuzione del programma digiti E%n"
-					+ "####################################################%n");
+					+ "####################################################%n", solSys.getName());
 			status = lettore.next();
 			status = status.substring(0, 1);
 			status = status.toUpperCase();
