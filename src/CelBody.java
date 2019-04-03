@@ -5,8 +5,9 @@ public class CelBody {
 	private double mass;
 	private Position pos;
 	private String orbiting;
-
-	// Costruttore
+	private double radius;
+	//We decided to create a class CelBody because we thought that 
+	// Constructors
 	public CelBody(String id, String name, double mass, Position pos, String orbiting) {
 		setId(id);
 		setName(name);
@@ -14,7 +15,15 @@ public class CelBody {
 		setPos(pos);
 		setOrbiting(orbiting);
 	}
-
+	public CelBody(String id, String name, double mass, Position pos, String orbiting, double radius) {
+		setId(id);
+		setName(name);
+		setMass(mass);
+		setPos(pos);
+		setOrbiting(orbiting);
+		setRadius(radius);
+	}
+	
 	// Getters and setters
 	public String getOrbiting() {
 		return orbiting;
@@ -54,6 +63,14 @@ public class CelBody {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public double getRadius() {
+		return radius;
+	}
+
+	public void setRadius(double d) {
+		this.radius = d;
 	}
 
 }

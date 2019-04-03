@@ -13,7 +13,8 @@ public class Planet extends CelBody {
 		super(id, name, mass, pos, orbiting);
 		setMoons(moons);
 	}
-
+	
+	// g & s
 	public ArrayList<CelBody> getMoons() {
 		return moons;
 	}
@@ -21,7 +22,16 @@ public class Planet extends CelBody {
 	public void setMoons(ArrayList<CelBody> moons) {
 		this.moons = moons;
 	}
-
+	//the method getRadius is already inherited from the superclass CelBody this method instead is just for the planets in the sistem
+	// the radius of a Planet infact is the radius of revolution around the star of the system 
+	// the radius of a CelBody instead is the radius of revolution around his planet 
+	
+	public void setRadius() {
+		setRadius(Math.sqrt (Math.pow(getPos().getX(), 2) + (Math.pow(getPos().getY(), 2) )));
+	}
+	
+	
+	//methods
 	public void addMoon(CelBody moon) {
 		int check = -1;
 		if (findMoon(moon.getId()) == check)
@@ -57,4 +67,5 @@ public class Planet extends CelBody {
 		}
 		return -1;
 	}
-}
+	
+	

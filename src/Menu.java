@@ -19,8 +19,8 @@ public class Menu {
 	}
 
 	public void init() {
-		System.out.println("Inizializzazione del planetario...");
-		System.out.print("Inserisci il nome del sistema solare che vuoi creare: ");
+		System.out.print("Inizializzazione del planetario...");
+		System.out.printf("%nInserisci il nome del sistema solare che vuoi creare: ");
 		solSys.setName(lettore.next());
 		System.out.print("Inserisci il nome del sole: ");
 		solSys.setSunName(lettore.next());
@@ -175,7 +175,8 @@ public class Menu {
 					_pos.setY(lettore.nextDouble());
 					String _id = _name + solSys.getCurrentId();
 					solSys.incrId();
-					CelBody moon = new CelBody(_id, _name, _mass, _pos, namePlanet);
+					double radius = Math.sqrt(Math.pow(pos.getX() - (_pos.getX()), 2) + (Math.pow(pos.getY() -_pos.getY(), 2)));
+					CelBody moon = new CelBody(_id, _name, _mass, _pos, namePlanet, radius);
 					moons.add(i, moon); // aggiunge la luna all'ArrayList moons
 				}
 				Planet p = new Planet(id, namePlanet, mass, pos, "SUN", moons);
@@ -222,36 +223,50 @@ public class Menu {
 	}
 
 	private void findRoute() {
-		System.out.print("Digitare P per selezionare un pianeta, M per una luna o S per una stella:");
-		String sel = lettore.next();
-		sel = sel.substring(0,1);
-		sel = sel.toUpperCase();
-		switch (sel) {
-		case "P":
-
-			break;
-
-		case "M":
-
-			break;
-			
-		case "S":
-
-			break;
-			
-		default:
-			System.out.print("Errore");
-			break;
-		}
 		System.out.print("Inserire il nome del corpo celeste di partenza: ");
 		String start = lettore.next();
 		System.out.print("Inserire il nome del corpo celeste di arrivo: ");
 		String end = lettore.next();
-		if (solSys.checkIfPlanetExists(start) && solSys.checkIfPlanetExists(end)) {
-			System.out.println("ciao");
-		} else {
-			System.out.println("Almeno uno dei corpi celesti non è presente nel sistema");
-		}
+		
+		String sType = "";
+		
+		String eType = "";
+			
+		// Created due Strings which memorize if the CelBodies are 2 planets, 2 moons or 1 planet and 1 moon ...
+		
+		if (solSys.checkIfMoonExists(start))
+			sType = "moon";
+		
+		if (solSys.checkIfMoonExists(end))
+			eType = "moon";
+		
+		if(solSys.checkIfPlanetExists(start))
+			sType = "planet";
+		
+		if(solSys.checkIfPlanetExists(end))
+			eType = "planet";
+		
+		if (solSys.checkIfMoonExists(start) == false && solSys.checkIfPlanetExists(start) == false)
+			sType = "errore";
+		
+		if (solSys.checkIfMoonExists(end) == false && solSys.checkIfPlanetExists(end) == false)
+			eType = "errore";
+		
+		if (sType.equals("moon")&& eType.equals("planet"))
+			solSys.fromMoonToPlanet(start, end);
+		
+		if (sType.equals("moon")&& eType.equals("moon"))
+			solSys.fromMoonToMoon(start, end);
+		
+		if (sType.equals("planet")&& eType.equals("moon"))
+			solSys.fromPlanetToMoon(start, end);
 
+		if (sType.equals("planet")&& eType.equals("planet"))
+			solSys.fromPlanetToPlanet(start, end);
+		
+		if (sType.equals("errore") || eType.equals("errore")) {
+			System.out.print("Impossibile calcolare la rotta, i corpi celesti inseriti non esistono nel sistema"
+					+ "%nSi utilizzi la funzione ricerca per verificare che i corpi appartengano al sistema");
+		}
 	}
 }

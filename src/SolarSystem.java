@@ -118,7 +118,7 @@ public class SolarSystem {
 		return null;
 
 	}
-	
+
 	public boolean checkIfPlanetExists(String name) {
 		if (findPlanetbyName(name) >= 0)
 			return true;
@@ -131,6 +131,12 @@ public class SolarSystem {
 				return true;
 		}
 		return false;
+	}
+
+	public CelBody getMoonInSistem(String name) {
+		if (checkIfMoonExists(name))
+			return findPlanetofMoon(name).getMoons().get(findPlanetofMoon(name).findMoon(name));
+		return null;
 	}
 
 	public Planet getPlanetofMoon(String name) {
@@ -162,6 +168,62 @@ public class SolarSystem {
 		totalMass += getSunMass();
 		cof = new Position(sumX / totalMass, sumY / totalMass);
 		setCenterOfMass(cof);
+	}
+
+	//metods for the route
+	public void fromPlanetToMoon(String start, String end) {
+		double sum = 0;
+		if (findPlanetofMoon(end).getName().equals(start)) {
+			sum = getMoonInSistem(end).getRadius();
+
+			System.out.printf("Il percorso univoco da %s a %s e'" + "%n%s - %s"
+					+ "%nLa luna %s orbita intorno al pianeta %s" + "%nLo spazio percorso e' %f", start, end, start,
+					end, end, start, sum);
+		} else {
+			sum = planets.get(findPlanetbyName(end)).getRadius() + findPlanetofMoon(end).getRadius()
+					+ getMoonInSistem(end).getRadius();
+
+			System.out.printf(
+					"Il percorso univoco da %s a %s e'" + "%n%s - %s - %s - %s" + "%nLo spazio percorso e' %f", start,
+					end, start, sunName, findPlanetofMoon(end).getName(), end, sum);
+		}
+
+	}
+
+	public void fromPlanetToPlanet(String start, String end) {
+		double sum = planets.get(findPlanetbyName(start)).getRadius() + planets.get(findPlanetbyName(end)).getRadius();
+		System.out.printf("Il percorso univoco da %s a %s e'" + "%n%s - %s - %s" + "%nLo spazio percorso e' %f", start,
+				end, start, sunName, end, sum);
+
+	}
+
+	public void fromMoonToMoon(String start, String end) {
+		double sum = 0;
+		if (findPlanetofMoon(start).getName().equals(findPlanetofMoon(end).getName())) {
+			sum = getMoonInSistem(start).getRadius() + getMoonInSistem(end).getRadius();
+			System.out.printf("Il percorso univoco da %s a %s e'" + "%n%s - %s - %s" + "%nLo spazio percorso e' %f",
+					start, end, start, findPlanetofMoon(start).getName(), end, sum);
+
+		} else
+			sum = getMoonInSistem(start).getRadius() + findPlanetofMoon(start).getRadius()
+					+ findPlanetofMoon(end).getRadius() + getMoonInSistem(end).getRadius();
+		System.out.printf(
+				"Il percorso univoco da %s a %s e'" + "%n%s - %s - %s - %s - %s" + "%nLo spazio percorso e' %f", start,
+				end, start, findPlanetofMoon(start).getName(), sunName, findPlanetofMoon(end).getName(), end, sum);
+	}
+
+	public void fromMoonToPlanet(String start, String end) {
+		double sum = 0;
+		if (findPlanetofMoon(start).getName().equals(end)) {
+			sum = getMoonInSistem(start).getRadius();
+			System.out.printf("Il percorso univoco da %s a %s e'" + "%n%s - %s"
+					+ "%nLa luna %s orbita intorno al pianeta %s" + "%nLo spazio percorso e' %f", start, end, start,
+					end, start, end, sum);
+		} else {
+			sum = getMoonInSistem(start).getRadius() + getPlanetofMoon(start).getRadius()+ getPlanet(findPlanetbyName(end)).getRadius();
+			System.out.printf("Il percorso univoco da %s a %s e'" + "%n%s - %s - %s - %s" + "%nLo spazio percorso e' %f", start, end, start,
+					findPlanetofMoon(start).getName(), sunName, end, sum);
+		}
 	}
 
 }

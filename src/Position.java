@@ -3,6 +3,7 @@ public class Position {
 	private double x;
 	private double y;
 
+	//constructors
 	public Position() {
 	}
 
@@ -10,7 +11,7 @@ public class Position {
 		setX(x);
 		setY(y);
 	}
-
+	//g & s
 	public double getX() {
 		return x;
 	}
