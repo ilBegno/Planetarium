@@ -5,51 +5,55 @@ public class CelBody {
 	private double mass;
 	private Position pos;
 	private String orbiting;
-	
-	//Costruttore
-	public CelBody(String id,String name,double mass,Position pos,String orbiting) {
+
+	// Costruttore
+	public CelBody(String id, String name, double mass, Position pos, String orbiting) {
 		setId(id);
 		setName(name);
 		setMass(mass);
 		setPos(pos);
 		setOrbiting(orbiting);
 	}
-	
-	//Getters and setters
+
+	// Getters and setters
 	public String getOrbiting() {
 		return orbiting;
 	}
+
 	public void setOrbiting(String orbiting) {
 		this.orbiting = orbiting;
 	}
-	
+
 	public Position getPos() {
 		return pos;
 	}
+
 	public void setPos(Position pos) {
 		this.pos = pos;
 	}
-	
+
 	public double getMass() {
 		return mass;
 	}
+
 	public void setMass(double mass) {
 		this.mass = mass;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	
+
 }

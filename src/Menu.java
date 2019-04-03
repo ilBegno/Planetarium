@@ -11,23 +11,31 @@ public class Menu {
 	public static final String DELETE = "D";
 	public static final String RESEARCH = "R";
 	public static final String COFMASS = "C";
-	
+
 	public Menu(SolarSystem solSys) {
 		this.solSys = solSys;
 		lettore = new Scanner(System.in);
 	}
 	
-	public void loop() 
-	{
-	 
-		CICLO: while (true)
-		{
+	public void init() {
+		System.out.println("Benvenuto nel planetario!");
+		System.out.println("Inserisci il nome del sistema solare che vuoi creare: ");
+		solSys.setName(lettore.next());
+		System.out.println("Inserisci il nome del sole: ");
+		solSys.setSunName(lettore.next());
+		System.out.println("Inserisci la massa del sole: ");
+		solSys.setSunMass(lettore.nextDouble());
+	}
+
+	public void loop() {
+
+		CICLO: while (true) {
 			try {
 				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.printf("%n####################################################" 
+			System.out.printf("%n####################################################"
 					+ "%nSalve utente del Consiglio Intergalattico, cosa desidera fare?"
 					+ "%nx Per aggiungere un corpo celeste al sistema digiti A"
 					+ "%nx Per eliminare un corpo celeste al sistema digiti D"
@@ -38,37 +46,36 @@ public class Menu {
 			status = lettore.next();
 			status = status.substring(0, 1);
 			status = status.toUpperCase();
-			//input utente ridotto ad un solo carattere
-			
-			switch(status) 
-			{
-				case ADD:
-					add();
-					break;
-					
-				case DELETE:
-					delete();
-					break;
-					
-				case RESEARCH:
-					research();
-					break;
-					
-				case COFMASS:
-					solSys.calcCoF();
-					System.out.printf("La posizione del centro di massa del sistema e':"
-							+ "%n X: %f" + "%n Y: %f", solSys.getCenterOfMass().getX(), solSys.getCenterOfMass().getY());
-					break;
-					
-				case EXIT: 
-					break CICLO;
+			// input utente ridotto ad un solo carattere
+
+			switch (status) {
+			case ADD:
+				add();
+				break;
+
+			case DELETE:
+				delete();
+				break;
+
+			case RESEARCH:
+				research();
+				break;
+
+			case COFMASS:
+				solSys.calcCoF();
+				System.out.printf("La posizione del centro di massa del sistema e':" + "%n X: %f" + "%n Y: %f",
+						solSys.getCenterOfMass().getX(), solSys.getCenterOfMass().getY());
+				break;
+
+			case EXIT:
+				break CICLO;
 			}
-			
+
 		}
 		lettore.close();
 		System.out.println("Esecuzione terminata");
 	}
-	
+
 	private void research() {
 		System.out.println("Inserire il nome del corpo celeste che si desidera cercare nel sistema: ");
 		String tosearch = lettore.next();
@@ -76,16 +83,16 @@ public class Menu {
 		int index = solSys.findPlanetbyName(tosearch);
 		if (index >= 0) {
 			found = true;
-			System.out.printf("Le lune del pianeta %s sono %s", tosearch,solSys.getPlanet(index).showMoons());
+			System.out.printf("Le lune del pianeta %s sono %s", tosearch, solSys.getPlanet(index).showMoons());
 		}
-		if(found == false && solSys.checkIfMoonExists(tosearch)) {
+		if (found == false && solSys.checkIfMoonExists(tosearch)) {
 			String planetname = solSys.findPlanetofMoon(tosearch).getName();
 			found = true;
 			System.out.printf("La luna %s orbita intorno a %s", tosearch, planetname);
 			System.out.printf("%nLa rotta per raggiungere questa luna e': %n%s %s %s", "Sun", planetname, tosearch);
 		}
-		if(found == false) {
-			System.out.printf("Il corpo celeste %s non è stato trovato nel sistema", tosearch);
+		if (found == false) {
+			System.out.printf("Il corpo celeste %s non ï¿½ stato trovato nel sistema", tosearch);
 		}
 	}
 
@@ -97,16 +104,14 @@ public class Menu {
 		planetormoon = lettore.next();
 		planetormoon = planetormoon.substring(0, 1);
 		planetormoon = planetormoon.toUpperCase();
-		switch(planetormoon) 
-		{
+		switch (planetormoon) {
 		case "P":
 			System.out.print("Inserire il nome del pianeta da rimuovere: ");
 			toremove = lettore.next();
 			if (solSys.findPlanetbyName(toremove) >= 0) {
 				solSys.removePlanet(toremove);
 				System.out.println("Pianeta rimosso correttamente");
-			}
-			else
+			} else
 				System.out.println("Il pianeta non esiste nel sistema");
 			break;
 		case "M":
@@ -115,16 +120,15 @@ public class Menu {
 			if (solSys.checkIfMoonExists(toremove)) {
 				solSys.findPlanetofMoon(toremove).removeMoon(toremove);
 				System.out.println("Luna rimossa correttamente");
-			}
-			else {
+			} else {
 				System.out.println("La luna non esiste nel sistema");
 			}
-		break;
+			break;
 		default:
 			System.out.println("Errore");
-		break;
+			break;
 		}
-		
+
 	}
 
 	private void add() {
@@ -134,11 +138,9 @@ public class Menu {
 		planetormoon = lettore.next();
 		planetormoon = planetormoon.substring(0, 1);
 		planetormoon = planetormoon.toUpperCase();
-		
-		switch(planetormoon) 
-		{
-		case "P":
-		{
+
+		switch (planetormoon) {
+		case "P": {
 			System.out.print("Inserire il nome del pianeta: ");
 			String namePlanet = lettore.next();
 			System.out.print("Inserire la massa del pianeta: ");
@@ -153,69 +155,63 @@ public class Menu {
 			int numMoons = lettore.nextInt();
 			String id = namePlanet + solSys.getCurrentId();
 			solSys.incrId();
-			if (numMoons > 0) 
-			{
-			ArrayList<CelBody> moons = new ArrayList<CelBody>();
-			for (int i = 0; i < numMoons; i++) {
-				System.out.printf("%nInserire il nome della luna nr%d: ", i+1);
-				String _name = lettore.next();
-				System.out.print("Inserire la massa della luna: ");
-				double _mass = lettore.nextDouble();
-				System.out.printf("Inserire la posizione della luna rispetto al Sole (0,0) %nx: ");
-				Position _pos = new Position();
-				_pos.setX(lettore.nextDouble());
-				System.out.print("y: ");
-				_pos.setY(lettore.nextDouble());
-				String _id = _name + solSys.getCurrentId();
-				solSys.incrId();
-				CelBody moon = new CelBody(_id, _name, _mass, _pos, namePlanet); 
-				moons.add(i, moon); //aggiunge la luna all'ArrayList moons
-			}
-			Planet p = new Planet(id, namePlanet, mass, pos, "SUN", moons);
-			solSys.addPlanet(p);
-			System.out.println("Pianeta e lune aggiunti correttamente al sistema");
-			}
-			else {
+			if (numMoons > 0) {
+				ArrayList<CelBody> moons = new ArrayList<CelBody>();
+				for (int i = 0; i < numMoons; i++) {
+					System.out.printf("%nInserire il nome della luna nr %d: ", i + 1);
+					String _name = lettore.next();
+					System.out.print("Inserire la massa della luna: ");
+					double _mass = lettore.nextDouble();
+					System.out.printf("Inserire la posizione della luna rispetto al Sole (0,0) %nx: ");
+					Position _pos = new Position();
+					_pos.setX(lettore.nextDouble());
+					System.out.print("y: ");
+					_pos.setY(lettore.nextDouble());
+					String _id = _name + solSys.getCurrentId();
+					solSys.incrId();
+					CelBody moon = new CelBody(_id, _name, _mass, _pos, namePlanet);
+					moons.add(i, moon); // aggiunge la luna all'ArrayList moons
+				}
+				Planet p = new Planet(id, namePlanet, mass, pos, "SUN", moons);
+				solSys.addPlanet(p);
+				System.out.println("Pianeta e lune aggiunti correttamente al sistema");
+			} else {
 				Planet p = new Planet(id, namePlanet, mass, pos, "SUN");
 				solSys.addPlanet(p);
 				System.out.println("Pianeta aggiunto correttamente al sistema");
 			}
-			
+
 		}
-		break;
-		
-		case "M":
-		{
-			String planetname; 
+			break;
+
+		case "M": {
+			String planetname;
 			System.out.print("Inserire il nome del pianeta a cui aggiungere una luna: ");
 			planetname = lettore.next();
 			int index = solSys.findPlanetbyName(planetname);
-			if(index >= 0)
-			{
-				
+			if (index >= 0) {
+
 				System.out.print("Inserire il nome della luna");
 				String _name = lettore.next();
 				System.out.print("Inserire la massa della luna: ");
 				double _mass = lettore.nextDouble();
-				System.out.printf("Inserire la posizione della luna rispetto al Sole (0,0) "
-						+ "%nx: ");
+				System.out.printf("Inserire la posizione della luna rispetto al Sole (0,0) " + "%nx: ");
 				Position _pos = new Position();
 				_pos.setX(lettore.nextDouble());
 				System.out.print("y: ");
 				_pos.setY(lettore.nextDouble());
 				String _id = _name + solSys.getCurrentId();
 				solSys.incrId();
-				CelBody moon = new CelBody(_id, _name, _mass, _pos, planetname); 
+				CelBody moon = new CelBody(_id, _name, _mass, _pos, planetname);
 				solSys.getPlanet(index).addMoon(moon);
-			}
-			else {
+			} else {
 				System.out.print("Il pianeta non esiste");
-			}	
+			}
 		}
-		break;
+			break;
 		default:
 			System.out.print("Errore");
-		break;
+			break;
 		}
 	}
 }

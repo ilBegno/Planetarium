@@ -5,7 +5,7 @@ public class MainClass {
 		
 		SolarSystem solSys = new SolarSystem();
 		Menu menu = new Menu(solSys);
-		
+		menu.init();
 		menu.loop();
 	}
 }
