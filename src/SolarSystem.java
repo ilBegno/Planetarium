@@ -89,7 +89,7 @@ public class SolarSystem {
 		setPlanets(planets);
 	}
 
-	// metods
+	// methods
 	public int findPlanet(String id) {
 		for (int i = 0; i < planets.size(); i++) {
 			if (planets.get(i).getId().equals(id)) {
@@ -117,6 +117,12 @@ public class SolarSystem {
 		}
 		return null;
 
+	}
+	
+	public boolean checkIfPlanetExists(String name) {
+		if (findPlanetbyName(name) >= 0)
+			return true;
+		return false;
 	}
 
 	public boolean checkIfMoonExists(String name) {

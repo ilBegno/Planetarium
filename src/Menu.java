@@ -11,19 +11,20 @@ public class Menu {
 	public static final String DELETE = "D";
 	public static final String RESEARCH = "R";
 	public static final String COFMASS = "C";
+	public static final String PATH = "P";
 
 	public Menu(SolarSystem solSys) {
 		this.solSys = solSys;
 		lettore = new Scanner(System.in);
 	}
-	
+
 	public void init() {
 		System.out.println("Inizializzazione del planetario...");
-		System.out.println("Inserisci il nome del sistema solare che vuoi creare: ");
-		solSys.setName(lettore.nextLine());
-		System.out.println("Inserisci il nome del sole: ");
-		solSys.setSunName(lettore.nextLine());
-		System.out.println("Inserisci la massa del sole: ");
+		System.out.print("Inserisci il nome del sistema solare che vuoi creare: ");
+		solSys.setName(lettore.next());
+		System.out.print("Inserisci il nome del sole: ");
+		solSys.setSunName(lettore.next());
+		System.out.print("Inserisci la massa del sole: ");
 		solSys.setSunMass(lettore.nextDouble());
 	}
 
@@ -36,12 +37,12 @@ public class Menu {
 				e.printStackTrace();
 			}
 			System.out.printf("%n####################################################"
-					+ "%nSalve utente del Consiglio Intergalattico"
-					+ "%nBenvenuto nel %s! Cosa desidera fare?"
+					+ "%nSalve utente del Consiglio Intergalattico" + "%nBenvenuto nel %s! Cosa desidera fare?"
 					+ "%nx Per aggiungere un corpo celeste al sistema digiti A"
 					+ "%nx Per eliminare un corpo celeste al sistema digiti D"
 					+ "%nx Per cercare un corpo celeste digiti R"
 					+ "%nx Per conoscere la posizione del centro di massa del sistema digiti C"
+					+ "%nx Per conoscere il percorso tra 2 corpi celesti digiti P"
 					+ "%nx Per terminare l'esecuzione del programma digiti E%n"
 					+ "####################################################%n", solSys.getName());
 			status = lettore.next();
@@ -66,6 +67,10 @@ public class Menu {
 				solSys.calcCoF();
 				System.out.printf("La posizione del centro di massa del sistema e':" + "%n X: %f" + "%n Y: %f",
 						solSys.getCenterOfMass().getX(), solSys.getCenterOfMass().getY());
+				break;
+
+			case PATH:
+				findRoute();
 				break;
 
 			case EXIT:
@@ -214,5 +219,39 @@ public class Menu {
 			System.out.print("Errore");
 			break;
 		}
+	}
+
+	private void findRoute() {
+		System.out.print("Digitare P per selezionare un pianeta, M per una luna o S per una stella:");
+		String sel = lettore.next();
+		sel = sel.substring(0,1);
+		sel = sel.toUpperCase();
+		switch (sel) {
+		case "P":
+
+			break;
+
+		case "M":
+
+			break;
+			
+		case "S":
+
+			break;
+			
+		default:
+			System.out.print("Errore");
+			break;
+		}
+		System.out.print("Inserire il nome del corpo celeste di partenza: ");
+		String start = lettore.next();
+		System.out.print("Inserire il nome del corpo celeste di arrivo: ");
+		String end = lettore.next();
+		if (solSys.checkIfPlanetExists(start) && solSys.checkIfPlanetExists(end)) {
+			System.out.println("ciao");
+		} else {
+			System.out.println("Almeno uno dei corpi celesti non è presente nel sistema");
+		}
+
 	}
 }
