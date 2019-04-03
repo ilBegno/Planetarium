@@ -180,7 +180,7 @@ public class SolarSystem {
 					+ "%nLa luna %s orbita intorno al pianeta %s" + "%nLo spazio percorso e' %f", start, end, start,
 					end, end, start, sum);
 		} else {
-			sum = planets.get(findPlanetbyName(end)).getRadius() + findPlanetofMoon(end).getRadius()
+			sum = planets.get(findPlanetbyName(start)).getRadius() + findPlanetofMoon(end).getRadius()
 					+ getMoonInSistem(end).getRadius();
 
 			System.out.printf(
