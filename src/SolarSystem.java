@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class SolarSystem {
-	// attr
+	// attributes
 	private String name;
 	private String sunName;
 	private double sunMass;
@@ -19,7 +19,7 @@ public class SolarSystem {
 	}
 
 	public boolean addPlanet(Planet p) {
-		if (findPlanet(p.getId()) == -1) {// se non esiste un altro pianeta con lo stesso Id
+		if (findPlanet(p.getId()) == -1) {// If no other planet with the same id exists
 			planets.add(p);
 			return true;
 		}
@@ -78,7 +78,7 @@ public class SolarSystem {
 		this.sunMass = sunMass;
 	}
 
-	// constr
+	// constructors
 	public SolarSystem() {
 		this.setPlanets(new ArrayList<Planet>());
 		Position pos = new Position(0, 0);
@@ -170,7 +170,7 @@ public class SolarSystem {
 		setCenterOfMass(cof);
 	}
 
-	//metods for the route
+	// methods for the route
 	public void fromPlanetToMoon(String start, String end) {
 		double sum = 0;
 		if (findPlanetofMoon(end).getName().equals(start)) {
@@ -220,10 +220,11 @@ public class SolarSystem {
 					+ "%nLa luna %s orbita intorno al pianeta %s" + "%nLo spazio percorso e' %f", start, end, start,
 					end, start, end, sum);
 		} else {
-			sum = getMoonInSistem(start).getRadius() + getPlanetofMoon(start).getRadius()+ getPlanet(findPlanetbyName(end)).getRadius();
-			System.out.printf("Il percorso univoco da %s a %s e'" + "%n%s - %s - %s - %s" + "%nLo spazio percorso e' %f", start, end, start,
-					findPlanetofMoon(start).getName(), sunName, end, sum);
+			sum = getMoonInSistem(start).getRadius() + getPlanetofMoon(start).getRadius()
+					+ getPlanet(findPlanetbyName(end)).getRadius();
+			System.out.printf(
+					"Il percorso univoco da %s a %s e'" + "%n%s - %s - %s - %s" + "%nLo spazio percorso e' %f", start,
+					end, start, findPlanetofMoon(start).getName(), sunName, end, sum);
 		}
 	}
-
 }

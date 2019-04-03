@@ -38,17 +38,17 @@ public class Menu {
 			}
 			System.out.printf("%n####################################################"
 					+ "%nSalve utente del Consiglio Intergalattico" + "%nBenvenuto nel %s! Cosa desidera fare?"
-					+ "%nx Per aggiungere un corpo celeste al sistema digiti A"
-					+ "%nx Per eliminare un corpo celeste al sistema digiti D"
-					+ "%nx Per cercare un corpo celeste digiti R"
-					+ "%nx Per conoscere la posizione del centro di massa del sistema digiti C"
-					+ "%nx Per conoscere il percorso tra 2 corpi celesti digiti P"
-					+ "%nx Per terminare l'esecuzione del programma digiti E%n"
+					+ "%n• Per aggiungere un corpo celeste al sistema digiti A"
+					+ "%n• Per eliminare un corpo celeste al sistema digiti D"
+					+ "%n• Per cercare un corpo celeste digiti R"
+					+ "%n• Per conoscere la posizione del centro di massa del sistema digiti C"
+					+ "%n• Per conoscere il percorso tra 2 corpi celesti digiti P"
+					+ "%n• Per terminare l'esecuzione del programma digiti E%n"
 					+ "####################################################%n", solSys.getName());
 			status = lettore.next();
 			status = status.substring(0, 1);
 			status = status.toUpperCase();
-			// input utente ridotto ad un solo carattere
+			// User input shortened to the first char
 
 			switch (status) {
 			case ADD:
@@ -159,6 +159,7 @@ public class Menu {
 			System.out.print("Questo pianeta possiede lune? Digitare il numero di lune,"
 					+ " in caso non ne possieda inserire 0: ");
 			int numMoons = lettore.nextInt();
+			double radius = Math.sqrt(Math.pow(pos.getX(), 2) + (Math.pow(pos.getY(), 2)));
 			String id = namePlanet + solSys.getCurrentId();
 			solSys.incrId();
 			if (numMoons > 0) {
@@ -175,15 +176,15 @@ public class Menu {
 					_pos.setY(lettore.nextDouble());
 					String _id = _name + solSys.getCurrentId();
 					solSys.incrId();
-					double radius = Math.sqrt(Math.pow(pos.getX() - (_pos.getX()), 2) + (Math.pow(pos.getY() -_pos.getY(), 2)));
-					CelBody moon = new CelBody(_id, _name, _mass, _pos, namePlanet, radius);
-					moons.add(i, moon); // aggiunge la luna all'ArrayList moons
+					double _radius = Math.sqrt(Math.pow(pos.getX() - (_pos.getX()), 2) + (Math.pow(pos.getY() - _pos.getY(), 2)));
+					CelBody moon = new CelBody(_id, _name, _mass, _pos, namePlanet, _radius);
+					moons.add(i, moon); // Adding moon to the moons ArrayList
 				}
-				Planet p = new Planet(id, namePlanet, mass, pos, "SUN", moons);
+				Planet p = new Planet(id, namePlanet, mass, pos, "SUN", moons, radius);
 				solSys.addPlanet(p);
 				System.out.println("Pianeta e lune aggiunti correttamente al sistema");
 			} else {
-				Planet p = new Planet(id, namePlanet, mass, pos, "SUN");
+				Planet p = new Planet(id, namePlanet, mass, pos, "SUN", radius);
 				solSys.addPlanet(p);
 				System.out.println("Pianeta aggiunto correttamente al sistema");
 			}
@@ -198,7 +199,7 @@ public class Menu {
 			int index = solSys.findPlanetbyName(planetname);
 			if (index >= 0) {
 
-				System.out.print("Inserire il nome della luna");
+				System.out.print("Inserire il nome della luna: ");
 				String _name = lettore.next();
 				System.out.print("Inserire la massa della luna: ");
 				double _mass = lettore.nextDouble();
@@ -227,43 +228,43 @@ public class Menu {
 		String start = lettore.next();
 		System.out.print("Inserire il nome del corpo celeste di arrivo: ");
 		String end = lettore.next();
-		
+
 		String sType = "";
-		
+
 		String eType = "";
-			
-		// Created due Strings which memorize if the CelBodies are 2 planets, 2 moons or 1 planet and 1 moon ...
-		
+
+		// Creating two strings which store what kind of CelBody the user selected (moon or planet)
+
 		if (solSys.checkIfMoonExists(start))
 			sType = "moon";
-		
+
 		if (solSys.checkIfMoonExists(end))
 			eType = "moon";
-		
-		if(solSys.checkIfPlanetExists(start))
+
+		if (solSys.checkIfPlanetExists(start))
 			sType = "planet";
-		
-		if(solSys.checkIfPlanetExists(end))
+
+		if (solSys.checkIfPlanetExists(end))
 			eType = "planet";
-		
+
 		if (solSys.checkIfMoonExists(start) == false && solSys.checkIfPlanetExists(start) == false)
 			sType = "errore";
-		
+
 		if (solSys.checkIfMoonExists(end) == false && solSys.checkIfPlanetExists(end) == false)
 			eType = "errore";
-		
-		if (sType.equals("moon")&& eType.equals("planet"))
+
+		if (sType.equals("moon") && eType.equals("planet"))
 			solSys.fromMoonToPlanet(start, end);
-		
-		if (sType.equals("moon")&& eType.equals("moon"))
+
+		if (sType.equals("moon") && eType.equals("moon"))
 			solSys.fromMoonToMoon(start, end);
-		
-		if (sType.equals("planet")&& eType.equals("moon"))
+
+		if (sType.equals("planet") && eType.equals("moon"))
 			solSys.fromPlanetToMoon(start, end);
 
-		if (sType.equals("planet")&& eType.equals("planet"))
+		if (sType.equals("planet") && eType.equals("planet"))
 			solSys.fromPlanetToPlanet(start, end);
-		
+
 		if (sType.equals("errore") || eType.equals("errore")) {
 			System.out.print("Impossibile calcolare la rotta, i corpi celesti inseriti non esistono nel sistema"
 					+ "%nSi utilizzi la funzione ricerca per verificare che i corpi appartengano al sistema");
